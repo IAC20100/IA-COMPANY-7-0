@@ -264,15 +264,24 @@ export default function Receipts() {
                 <p className="mb-20 text-lg">
                   _________________, {new Date(date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </p>
-                <div className="flex flex-col items-center w-80 mx-auto">
-                  <div className="h-20 flex items-end justify-center w-full relative">
-                    {companySignature && (
-                      <img src={companySignature} alt="Assinatura" className="max-h-full max-w-full object-contain mb-[-10px] relative z-10" />
-                    )}
+                <div className="grid grid-cols-2 gap-16 max-w-3xl mx-auto">
+                  <div className="flex flex-col items-center w-full">
+                    <div className="h-20 flex items-end justify-center w-full relative">
+                      {companySignature && (
+                        <img src={companySignature} alt="Assinatura" className="max-h-full max-w-full object-contain mb-[-10px] relative z-10" />
+                      )}
+                    </div>
+                    <div className="border-t-2 border-gray-800 pt-3 w-full">
+                      <p className="font-bold text-lg">Síndico</p>
+                      <p className="text-sm text-gray-500 mt-1">Assinatura</p>
+                    </div>
                   </div>
-                  <div className="border-t-2 border-gray-800 pt-3 w-full">
-                    <p className="font-bold text-lg">{companyData?.name || 'Assinatura do Recebedor'}</p>
-                    {companyData?.document && <p className="text-sm text-gray-500 mt-1">{companyData.document}</p>}
+                  <div className="flex flex-col items-center w-full">
+                    <div className="h-20 w-full"></div>
+                    <div className="border-t-2 border-gray-800 pt-3 w-full">
+                      <p className="font-bold text-lg">Cliente</p>
+                      <p className="text-sm text-gray-500 mt-1">Assinatura</p>
+                    </div>
                   </div>
                 </div>
               </div>

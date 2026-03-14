@@ -771,8 +771,8 @@ export default function Quotes() {
                         <div className="h-px bg-zinc-200 w-full"></div>
                       </div>
                       <div className="space-y-1 text-center">
-                        <p className="text-[11px] font-black uppercase tracking-widest text-zinc-900">{companyData?.name || 'IA COMPANY TEC'}</p>
-                        <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Responsável Técnico</p>
+                        <p className="text-[11px] font-black uppercase tracking-widest text-zinc-900">Síndico</p>
+                        <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Assinatura</p>
                       </div>
                     </div>
                     <div className="space-y-4">
@@ -781,7 +781,7 @@ export default function Quotes() {
                         <div className="h-px bg-zinc-200 w-full"></div>
                       </div>
                       <div className="space-y-1 text-center">
-                        <p className="text-[11px] font-black uppercase tracking-widest text-zinc-900">Aceite do Cliente</p>
+                        <p className="text-[11px] font-black uppercase tracking-widest text-zinc-900">Cliente</p>
                         <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Assinatura e Data</p>
                       </div>
                     </div>

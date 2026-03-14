@@ -259,14 +259,14 @@ export default function TicketView() {
               </div>
               <div className="border-t border-white/20 w-3/4 mx-auto print:border-gray-400"></div>
             </div>
-            <p className="font-bold text-white print:text-gray-900">{ticket.technician}</p>
-            <p className="text-xs text-white/40 uppercase tracking-widest print:text-gray-500">Técnico Responsável</p>
+            <p className="font-bold text-white print:text-gray-900">Síndico</p>
+            <p className="text-xs text-white/40 uppercase tracking-widest print:text-gray-500">Assinatura</p>
           </div>
           <div className="text-center">
             <div className="h-16"></div>
             <div className="border-t border-white/20 w-3/4 mx-auto mb-2 print:border-gray-400"></div>
-            <p className="font-bold text-white print:text-gray-900">{client?.name || 'Cliente'}</p>
-            <p className="text-xs text-white/40 uppercase tracking-widest print:text-gray-500">Cliente / Síndico(a)</p>
+            <p className="font-bold text-white print:text-gray-900">Cliente</p>
+            <p className="text-xs text-white/40 uppercase tracking-widest print:text-gray-500">Assinatura</p>
           </div>
         </div>
         </div>

@@ -130,9 +130,21 @@ export default function KanbanBoard() {
                         className="bg-white hover:bg-zinc-50 p-6 rounded-2xl border border-zinc-200 cursor-grab active:cursor-grabbing transition-all group relative shadow-sm"
                       >
                         <div className="flex justify-between items-start mb-4">
-                          <span className="bg-zinc-100 text-zinc-500 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest border border-zinc-200">
-                            {ticket.type}
-                          </span>
+                          <div className="flex flex-wrap items-center gap-2">
+                            {ticket.osNumber && (
+                              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest border border-blue-200">
+                                {ticket.osNumber}
+                              </span>
+                            )}
+                            <span className="bg-zinc-100 text-zinc-500 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest border border-zinc-200">
+                              {ticket.type}
+                            </span>
+                            {ticket.maintenanceCategory && (
+                              <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest border border-emerald-200 truncate max-w-[150px]" title={ticket.maintenanceCategory}>
+                                {ticket.maintenanceCategory}
+                              </span>
+                            )}
+                          </div>
                           <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Link 
                               to={`/tickets/${ticket.id}/edit`}

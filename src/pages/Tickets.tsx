@@ -13,7 +13,7 @@ export default function Tickets() {
 
   const filteredTickets = tickets.filter(ticket => {
     const client = clients.find(c => c.id === ticket.clientId);
-    const searchStr = `${ticket.title} ${client?.name} ${ticket.technician} ${ticket.type}`.toLowerCase();
+    const searchStr = `${ticket.osNumber || ''} ${ticket.title} ${client?.name} ${ticket.technician} ${ticket.type} ${ticket.maintenanceCategory || ''} ${ticket.maintenanceSubcategory || ''}`.toLowerCase();
     return searchStr.includes(searchTerm.toLowerCase());
   });
 
@@ -134,10 +134,20 @@ export default function Tickets() {
                         <Wrench className="w-7 h-7" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-white group-hover:text-blue-300 transition-colors leading-tight mb-1">
-                          {ticket.title || `Manutenção ${ticket.type}`}
-                        </h3>
-                        <p className="text-lg text-white/50 font-medium mb-3">{client?.name || 'Local não especificado'}</p>
+                        <div className="flex items-center gap-3 mb-1">
+                          {ticket.osNumber && (
+                            <span className="px-3 py-1 bg-white/10 text-white/70 rounded-lg text-sm font-bold tracking-wider border border-white/10">
+                              {ticket.osNumber}
+                            </span>
+                          )}
+                          <h3 className="text-2xl font-bold text-white group-hover:text-blue-300 transition-colors leading-tight">
+                            {ticket.title || `Manutenção ${ticket.type}`}
+                          </h3>
+                        </div>
+                        <p className="text-lg text-white/50 font-medium mb-3">
+                          {client?.name || 'Local não especificado'}
+                          {ticket.maintenanceCategory && ` • ${ticket.maintenanceCategory}`}
+                        </p>
                         <div className="flex flex-wrap items-center gap-4">
                           <span className="flex items-center gap-2 text-white/30 font-bold text-sm uppercase tracking-wider">
                             <Clock className="w-4 h-4" />

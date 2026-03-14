@@ -101,11 +101,20 @@ export default function TicketView() {
               <img src={companyLogo} alt="Logo da Empresa" className="h-16 w-auto object-contain print:brightness-0" />
             )}
             <div>
-              <h2 className="text-2xl font-bold text-white uppercase print:text-gray-900">
-                {ticket.title || 'Relatório de Manutenção'}
-              </h2>
+              <div className="flex items-center gap-3 mb-1">
+                {ticket.osNumber && (
+                  <span className="px-2 py-1 bg-white/10 text-white/70 rounded text-xs font-bold tracking-wider border border-white/10 print:bg-gray-200 print:text-gray-800 print:border-gray-300">
+                    {ticket.osNumber}
+                  </span>
+                )}
+                <h2 className="text-2xl font-bold text-white uppercase print:text-gray-900">
+                  {ticket.title || 'Relatório de Manutenção'}
+                </h2>
+              </div>
               <p className="text-white/60 font-medium mt-1 print:text-gray-500">
                 {ticket.type === 'CORRETIVA' ? 'Manutenção Corretiva' : 'Manutenção Preventiva / Checklist'}
+                {ticket.maintenanceCategory && ` • ${ticket.maintenanceCategory}`}
+                {ticket.maintenanceSubcategory && ` - ${ticket.maintenanceSubcategory}`}
               </p>
               {companyData && (
                 <div className="mt-2 text-sm text-white/40 print:text-gray-500">

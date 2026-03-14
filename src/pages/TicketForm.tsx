@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useStore, TicketType, TicketStatus } from '../store';
 import { ArrowLeft, Save, X, ClipboardList, Info, Wrench, ShieldAlert, Clock, CheckCircle2, AlertCircle, HelpCircle, Camera, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { MAINTENANCE_CATEGORIES } from '../constants/maintenance';
 
 export default function TicketForm() {
   const navigate = useNavigate();
@@ -10,9 +11,12 @@ export default function TicketForm() {
   const { clients, checklistItems, addTicket, updateTicket, tickets } = useStore();
   
   const [title, setTitle] = useState('');
+  const [osNumber, setOsNumber] = useState('');
   const [type, setType] = useState<TicketType>('CORRETIVA');
   const [status, setStatus] = useState<TicketStatus>('APROVADO');
   const [clientId, setClientId] = useState('');
+  const [maintenanceCategory, setMaintenanceCategory] = useState('');
+  const [maintenanceSubcategory, setMaintenanceSubcategory] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [technician, setTechnician] = useState('');
   const [observations, setObservations] = useState('');
@@ -37,6 +41,9 @@ export default function TicketForm() {
       const ticket = tickets.find(t => t.id === id);
       if (ticket) {
         setTitle(ticket.title || '');
+        setOsNumber(ticket.osNumber || '');
+        setMaintenanceCategory(ticket.maintenanceCategory || '');
+        setMaintenanceSubcategory(ticket.maintenanceSubcategory || '');
         setType(ticket.type);
         setStatus(ticket.status || 'APROVADO');
         setClientId(ticket.clientId);
@@ -66,8 +73,11 @@ export default function TicketForm() {
     
     const ticketData = {
       title,
+      osNumber,
       type,
       status,
+      maintenanceCategory,
+      maintenanceSubcategory,
       clientId,
       date,
       technician,
@@ -210,7 +220,18 @@ export default function TicketForm() {
                   </h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="md:col-span-2 space-y-3">
+                    <div className="space-y-3">
+                      <label className="block text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Nº OS</label>
+                      <input 
+                        type="text"
+                        value={osNumber}
+                        onChange={(e) => setOsNumber(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 focus:border-white/30 rounded-2xl px-6 py-5 outline-none transition-all text-white text-xl placeholder:text-white/10"
+                        placeholder="Gerado automaticamente se vazio"
+                      />
+                    </div>
+
+                    <div className="space-y-3">
                       <label className="block text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Título da Tarefa</label>
                       <input 
                         type="text"
@@ -244,6 +265,38 @@ export default function TicketForm() {
                         <option value="AGUARDANDO_MATERIAL" className="bg-[#004a7c]">Aguardando Material</option>
                         <option value="REALIZANDO" className="bg-[#004a7c]">Realizando</option>
                         <option value="CONCLUIDO" className="bg-[#004a7c]">Concluído</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Categoria de Manutenção</label>
+                      <select 
+                        value={maintenanceCategory}
+                        onChange={(e) => {
+                          setMaintenanceCategory(e.target.value);
+                          setMaintenanceSubcategory('');
+                        }}
+                        className="w-full bg-white/5 border border-white/10 focus:border-white/30 rounded-2xl px-6 py-5 outline-none transition-all text-white text-xl appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-[#004a7c]">Selecione uma categoria...</option>
+                        {Object.keys(MAINTENANCE_CATEGORIES).map(cat => (
+                          <option key={cat} value={cat} className="bg-[#004a7c]">{cat}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Subcategoria</label>
+                      <select 
+                        value={maintenanceSubcategory}
+                        onChange={(e) => setMaintenanceSubcategory(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 focus:border-white/30 rounded-2xl px-6 py-5 outline-none transition-all text-white text-xl appearance-none cursor-pointer disabled:opacity-50"
+                        disabled={!maintenanceCategory}
+                      >
+                        <option value="" className="bg-[#004a7c]">Selecione uma subcategoria...</option>
+                        {maintenanceCategory && MAINTENANCE_CATEGORIES[maintenanceCategory]?.map(sub => (
+                          <option key={sub} value={sub} className="bg-[#004a7c]">{sub}</option>
+                        ))}
                       </select>
                     </div>
                     

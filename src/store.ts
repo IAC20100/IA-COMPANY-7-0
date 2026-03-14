@@ -70,9 +70,12 @@ export type Appointment = {
 
 export type Ticket = {
   id: string;
+  osNumber?: string;
   title?: string;
   type: TicketType;
   status?: TicketStatus;
+  maintenanceCategory?: string;
+  maintenanceSubcategory?: string;
   clientId: string;
   date: string;
   technician: string;
@@ -217,7 +220,19 @@ export const useStore = create<AppState>()(
       })),
       deleteChecklistItem: (id) => set((state) => ({ checklistItems: state.checklistItems.filter(i => i.id !== id) })),
       
-      addTicket: (ticket) => set((state) => ({ tickets: [...state.tickets, { ...ticket, id: uuidv4() }] })),
+      addTicket: (ticket) => set((state) => {
+        let maxOs = 0;
+        state.tickets.forEach(t => {
+          if (t.osNumber && t.osNumber.startsWith('OS-')) {
+            const num = parseInt(t.osNumber.replace('OS-', ''), 10);
+            if (!isNaN(num) && num > maxOs) {
+              maxOs = num;
+            }
+          }
+        });
+        const nextOsNumber = `OS-${String(maxOs + 1).padStart(4, '0')}`;
+        return { tickets: [...state.tickets, { ...ticket, id: uuidv4(), osNumber: ticket.osNumber || nextOsNumber }] };
+      }),
       updateTicket: (id, updatedTicket) => set((state) => ({
         tickets: state.tickets.map(t => t.id === id ? { ...updatedTicket, id } : t)
       })),

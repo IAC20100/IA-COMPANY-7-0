@@ -38,13 +38,14 @@ export default function Calendar() {
   // Map tickets to calendar events
   const ticketEvents = tickets.map(t => {
     const client = clients.find(c => c.id === t.clientId);
+    const osPrefix = t.osNumber ? `${t.osNumber} - ` : 'OS: ';
     return {
       id: `ticket-${t.id}`,
-      title: `OS: ${client?.name || 'Desconhecido'}`,
+      title: `${osPrefix}${client?.name || 'Desconhecido'}`,
       start: new Date(t.date + 'T08:00:00'),
       end: new Date(t.date + 'T18:00:00'),
       allDay: true,
-      resource: { type: 'TICKET', originalId: t.id, clientName: client?.name }
+      resource: { type: 'TICKET', originalId: t.id, clientName: client?.name, osNumber: t.osNumber, maintenanceCategory: t.maintenanceCategory }
     };
   });
 
@@ -353,6 +354,8 @@ export default function Calendar() {
                 <p className="text-xs font-black uppercase tracking-[0.3em] text-white/30 mt-3">
                   {selectedEvent.resource.type === 'TICKET' ? 'Ordem de Serviço' : 
                    selectedEvent.resource.type === 'MEETING' ? 'Reunião' : 'Outro'}
+                  {selectedEvent.resource.osNumber && ` • ${selectedEvent.resource.osNumber}`}
+                  {selectedEvent.resource.maintenanceCategory && ` • ${selectedEvent.resource.maintenanceCategory}`}
                 </p>
               </div>
             </div>

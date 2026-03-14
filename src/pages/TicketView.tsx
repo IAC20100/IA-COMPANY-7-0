@@ -42,7 +42,7 @@ export default function TicketView() {
   };
 
   return (
-    <div className="min-h-screen bg-[#004a7c] text-white -m-8 p-8 md:p-12 overflow-x-hidden relative flex flex-col print:bg-white print:text-black print:p-0">
+    <div className="min-h-screen bg-[#004a7c] text-white -m-8 p-8 md:p-12 overflow-x-hidden relative flex flex-col print:bg-white print:text-black print:p-0 print:m-0 print:block">
       <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden print:hidden">
         <svg className="w-full h-full" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,1000 C300,800 400,900 1000,600 L1000,1000 L0,1000 Z" fill="white" fillOpacity="0.1" />
@@ -92,10 +92,10 @@ export default function TicketView() {
 
         <div 
           ref={printRef} 
-          className="bg-white/5 backdrop-blur-md text-white rounded-3xl border border-white/10 shadow-2xl p-8 print:bg-white print:text-black print:shadow-none print:border-none print:p-0"
+          className="bg-white/5 backdrop-blur-md text-white rounded-3xl border border-white/10 shadow-2xl p-8 print:bg-white print:text-black print:shadow-none print:border-none print:p-8 print:block print:w-full print:max-w-none print:rounded-none"
         >
         {/* Cabeçalho do Relatório */}
-        <div className="border-b border-white/10 pb-6 mb-6 flex justify-between items-start break-inside-avoid print:border-gray-800">
+        <div className="border-b border-white/10 pb-6 mb-6 flex justify-between items-start break-inside-avoid print:border-gray-300 print:pb-4 print:mb-4">
           <div className="flex items-center gap-4">
             {companyLogo && (
               <img src={companyLogo} alt="Logo da Empresa" className="h-16 w-auto object-contain print:brightness-0" />
@@ -135,32 +135,32 @@ export default function TicketView() {
 
         {/* Informações do Cliente */}
         {client && (
-          <div className="mb-8 bg-white/5 p-4 rounded-2xl border border-white/10 print:bg-transparent print:border-gray-300 break-inside-avoid">
-            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-3 print:text-gray-400">Dados do Cliente</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+          <div className="mb-8 bg-white/5 p-4 rounded-2xl border border-white/10 print:bg-transparent print:border-gray-300 print:border print:p-4 break-inside-avoid">
+            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-3 print:text-gray-500">Dados do Cliente</h3>
+            <div className="grid grid-cols-2 gap-4 print:gap-2">
+              <div className="break-inside-avoid">
                 <p className="text-xs text-white/40 print:text-gray-500">Nome / Condomínio</p>
-                <p className="font-medium text-white print:text-gray-900">{client.name}</p>
+                <p className="font-medium text-white print:text-black">{client.name}</p>
               </div>
-              <div>
+              <div className="break-inside-avoid">
                 <p className="text-xs text-white/40 print:text-gray-500">CNPJ / CPF</p>
-                <p className="font-medium text-white print:text-gray-900">{client.document || '-'}</p>
+                <p className="font-medium text-white print:text-black">{client.document || '-'}</p>
               </div>
-              <div>
+              <div className="break-inside-avoid">
                 <p className="text-xs text-white/40 print:text-gray-500">Responsável</p>
-                <p className="font-medium text-white print:text-gray-900">{client.contactPerson || '-'}</p>
+                <p className="font-medium text-white print:text-black">{client.contactPerson || '-'}</p>
               </div>
-              <div>
+              <div className="break-inside-avoid">
                 <p className="text-xs text-white/40 print:text-gray-500">Telefone</p>
-                <p className="font-medium text-white print:text-gray-900">{client.phone}</p>
+                <p className="font-medium text-white print:text-black">{client.phone}</p>
               </div>
-              <div>
+              <div className="break-inside-avoid">
                 <p className="text-xs text-white/40 print:text-gray-500">E-mail</p>
-                <p className="font-medium text-white print:text-gray-900">{client.email || '-'}</p>
+                <p className="font-medium text-white print:text-black">{client.email || '-'}</p>
               </div>
-              <div className="col-span-2">
+              <div className="col-span-2 break-inside-avoid">
                 <p className="text-xs text-white/40 print:text-gray-500">Endereço</p>
-                <p className="font-medium text-white print:text-gray-900">{client.address}</p>
+                <p className="font-medium text-white print:text-black">{client.address}</p>
               </div>
             </div>
           </div>
@@ -169,54 +169,54 @@ export default function TicketView() {
         {/* Conteúdo Específico */}
         {ticket.type === 'CORRETIVA' ? (
           <div className="space-y-6">
-            <div className="break-inside-avoid">
-              <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-2 border-b border-white/5 pb-1 print:text-gray-400 print:border-gray-200">Problema Relatado</h3>
-              <p className="text-white/80 whitespace-pre-wrap print:text-gray-800">{ticket.reportedProblem}</p>
+            <div className="break-inside-avoid mb-6">
+              <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-2 border-b border-white/5 pb-1 print:text-gray-500 print:border-gray-300">Problema Relatado</h3>
+              <p className="text-white/80 whitespace-pre-wrap print:text-black">{ticket.reportedProblem}</p>
             </div>
 
-            <div className="break-inside-avoid">
-              <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-2 border-b border-white/5 pb-1 print:text-gray-400 print:border-gray-200">Relato da Ordem de Serviço</h3>
-              <p className="text-white/80 whitespace-pre-wrap print:text-gray-800">{ticket.serviceReport}</p>
+            <div className="break-inside-avoid mb-6">
+              <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-2 border-b border-white/5 pb-1 print:text-gray-500 print:border-gray-300">Relato da Ordem de Serviço</h3>
+              <p className="text-white/80 whitespace-pre-wrap print:text-black">{ticket.serviceReport}</p>
             </div>
 
             {ticket.productsForQuote && (
-              <div className="bg-amber-500/10 p-4 rounded-2xl border border-amber-500/20 print:bg-transparent print:border-gray-300 break-inside-avoid">
+              <div className="bg-amber-500/10 p-4 rounded-2xl border border-amber-500/20 print:bg-transparent print:border-gray-300 print:border break-inside-avoid">
                 <h3 className="text-xs font-black text-amber-400/60 uppercase tracking-widest mb-2 print:text-gray-500">Produtos para Orçamento</h3>
-                <p className="text-amber-200 whitespace-pre-wrap print:text-gray-800">{ticket.productsForQuote}</p>
+                <p className="text-amber-200 whitespace-pre-wrap print:text-black">{ticket.productsForQuote}</p>
               </div>
             )}
           </div>
         ) : (
           <div className="space-y-6">
-            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-4 border-b border-white/5 pb-2 print:text-gray-400 print:border-gray-200">Resultados do Checklist</h3>
+            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-4 border-b border-white/5 pb-2 print:text-gray-500 print:border-gray-300">Resultados do Checklist</h3>
             
-            <div className="overflow-hidden border border-white/10 rounded-2xl print:border-gray-200">
+            <div className="overflow-hidden border border-white/10 rounded-2xl print:border-gray-300 print:border">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
                   <tr className="bg-white/5 text-white/60 print:bg-gray-100 print:text-gray-700">
-                    <th className="p-3 font-bold uppercase tracking-wider border-b border-white/5 print:border-gray-200">Tarefa</th>
-                    <th className="p-3 font-bold uppercase tracking-wider border-b border-white/5 w-24 text-center print:border-gray-200">Status</th>
-                    <th className="p-3 font-bold uppercase tracking-wider border-b border-white/5 print:border-gray-200">Observações</th>
+                    <th className="p-3 font-bold uppercase tracking-wider border-b border-white/5 print:border-gray-300">Tarefa</th>
+                    <th className="p-3 font-bold uppercase tracking-wider border-b border-white/5 w-24 text-center print:border-gray-300">Status</th>
+                    <th className="p-3 font-bold uppercase tracking-wider border-b border-white/5 print:border-gray-300">Observações</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 print:divide-gray-200">
+                <tbody className="divide-y divide-white/5 print:divide-gray-300">
                   {ticket.checklistResults?.map(result => {
                     const item = checklistItems.find(i => i.id === result.taskId);
                     if (!item) return null;
                     
                     return (
                       <tr key={result.taskId} className="break-inside-avoid">
-                        <td className="p-3 text-white/80 font-medium print:text-gray-900">{item.task}</td>
+                        <td className="p-3 text-white/80 font-medium print:text-black">{item.task}</td>
                         <td className="p-3 text-center">
                           <span className={`px-2 py-1 rounded text-[10px] font-black uppercase tracking-widest ${
-                            result.status === 'OK' ? 'bg-emerald-500/20 text-emerald-400 print:border print:border-emerald-800 print:text-emerald-800' :
-                            result.status === 'NOK' ? 'bg-red-500/20 text-red-400 print:border print:border-red-800 print:text-red-800' :
-                            'bg-white/5 text-white/40 print:border print:border-gray-800 print:text-gray-800'
+                            result.status === 'OK' ? 'bg-emerald-500/20 text-emerald-400 print:bg-emerald-100 print:text-emerald-800' :
+                            result.status === 'NOK' ? 'bg-red-500/20 text-red-400 print:bg-red-100 print:text-red-800' :
+                            'bg-white/5 text-white/40 print:bg-gray-100 print:text-gray-800'
                           }`}>
                             {result.status}
                           </span>
                         </td>
-                        <td className="p-3 text-white/40 print:text-gray-600">{result.notes || '-'}</td>
+                        <td className="p-3 text-white/40 print:text-gray-700">{result.notes || '-'}</td>
                       </tr>
                     );
                   })}
@@ -229,19 +229,19 @@ export default function TicketView() {
         {/* Observações Gerais */}
         {ticket.observations && (
           <div className="mt-8 break-inside-avoid">
-            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-2 border-b border-white/5 pb-1 print:text-gray-400 print:border-gray-200">Observações Gerais</h3>
-            <p className="text-white/80 whitespace-pre-wrap print:text-gray-800">{ticket.observations}</p>
+            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-2 border-b border-white/5 pb-1 print:text-gray-500 print:border-gray-300">Observações Gerais</h3>
+            <p className="text-white/80 whitespace-pre-wrap print:text-black">{ticket.observations}</p>
           </div>
         )}
 
         {/* Fotos do Serviço */}
         {ticket.images && ticket.images.length > 0 && (
-          <div className="mt-8 break-inside-avoid">
-            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-4 border-b border-white/5 pb-1 print:text-gray-400 print:border-gray-200">Fotos do Serviço</h3>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="mt-8 print:mt-8 print:break-before-page">
+            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-4 border-b border-white/5 pb-1 print:text-gray-500 print:border-gray-300">Fotos do Serviço</h3>
+            <div className="grid grid-cols-2 gap-4 print:gap-4">
               {ticket.images.map((img, index) => (
-                <div key={index} className="rounded-2xl overflow-hidden border border-white/10 print:border-gray-200">
-                  <img src={img} alt={`Foto ${index + 1}`} className="w-full h-auto" />
+                <div key={index} className="rounded-2xl overflow-hidden border border-white/10 print:border-gray-300 print:border break-inside-avoid">
+                  <img src={img} alt={`Foto ${index + 1}`} className="w-full h-auto object-contain max-h-64" />
                 </div>
               ))}
             </div>
@@ -249,7 +249,7 @@ export default function TicketView() {
         )}
 
         {/* Assinaturas */}
-        <div className="mt-16 pt-8 grid grid-cols-2 gap-8 break-inside-avoid">
+        <div className="mt-16 pt-8 grid grid-cols-2 gap-8 break-inside-avoid print:mt-12 print:pt-4">
           <div className="text-center">
             <div className="flex flex-col items-center mb-2">
               <div className="h-16 flex items-end justify-center w-full relative">

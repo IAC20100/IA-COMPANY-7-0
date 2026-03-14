@@ -150,13 +150,13 @@ export default function Dashboard() {
       id: 'tickets',
       type: 'wide',
       component: (
-        <Link to="/tickets" className="w-full h-full bg-zinc-900 hover:bg-black transition-all p-4 flex flex-col justify-between aspect-[2/1] group relative overflow-hidden border border-zinc-800 shadow-xl active:scale-95">
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none" />
+        <Link to="/tickets" className="w-full h-full bg-gradient-to-br from-[#1ba19b] to-[#168c87] hover:brightness-110 transition-all p-4 flex flex-col justify-between aspect-[2/1] group relative overflow-hidden border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] active:scale-95">
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 pointer-events-none" />
           <div className="flex justify-center items-center h-full relative z-10">
             <Hammer className="w-16 h-16 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-500" />
           </div>
           <div className="flex justify-between items-end relative z-10">
-            <span className="text-[11px] font-bold uppercase tracking-wider drop-shadow-md text-white/70">Ordens de Serviço</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider drop-shadow-md text-white">Ordens de Serviço</span>
             <span className="text-5xl font-light drop-shadow-lg text-white">{openTickets}</span>
           </div>
         </Link>
@@ -214,7 +214,7 @@ export default function Dashboard() {
       id: 'financial',
       type: 'wide',
       component: (
-        <Link to="/financial" className="w-full h-full bg-gradient-to-br from-[#00a300] to-[#008000] hover:brightness-110 transition-all p-4 flex flex-col justify-between aspect-[2/1] group relative overflow-hidden border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] active:scale-95">
+        <Link to="/financial" className="w-full h-full bg-gradient-to-br from-[#22b14c] to-[#1a943d] hover:brightness-110 transition-all p-4 flex flex-col justify-between aspect-[2/1] group relative overflow-hidden border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] active:scale-95">
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 pointer-events-none" />
           <div className="flex flex-col justify-center items-center h-full relative z-10">
             <TrendingUp className="w-14 h-14 text-white mb-2 drop-shadow-lg group-hover:translate-y-[-4px] transition-transform duration-500" />
@@ -230,18 +230,18 @@ export default function Dashboard() {
       id: 'calendar',
       type: 'wide',
       component: (
-        <Link to="/calendar" className="w-full h-full bg-zinc-100 hover:bg-zinc-200 transition-all p-4 flex flex-col justify-between aspect-[2/1] group relative overflow-hidden border border-zinc-200 shadow-sm active:scale-95">
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-black/5 to-black/10 pointer-events-none" />
+        <Link to="/calendar" className="w-full h-full bg-gradient-to-br from-[#4285f4] to-[#3367d6] hover:brightness-110 transition-all p-4 flex flex-col justify-between aspect-[2/1] group relative overflow-hidden border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] active:scale-95 text-white">
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 pointer-events-none" />
           <div className="flex items-start gap-4 h-full relative z-10">
-            <div className="p-3 bg-white rounded-2xl border border-zinc-200 shadow-sm group-hover:scale-110 transition-transform duration-500">
-              <CalendarIcon className="w-10 h-10 text-zinc-900" />
+            <div className="p-3 bg-white/20 rounded-2xl border border-white/20 shadow-sm group-hover:scale-110 transition-transform duration-500">
+              <CalendarIcon className="w-10 h-10 text-white" />
             </div>
             <div className="overflow-hidden flex-1">
-              <p className="text-[10px] font-black uppercase text-zinc-400 mb-1 tracking-[0.2em]">Próximo Compromisso</p>
+              <p className="text-[10px] font-black uppercase text-white/70 mb-1 tracking-[0.2em]">Próximo Compromisso</p>
               {nextAppointment ? (
                 <div className="space-y-1">
-                  <p className="font-black text-xl truncate text-zinc-900 leading-tight">{nextAppointment.title}</p>
-                  <div className="flex items-center gap-2 text-zinc-500">
+                  <p className="font-black text-xl truncate text-white leading-tight">{nextAppointment.title}</p>
+                  <div className="flex items-center gap-2 text-white/80">
                     <Clock className="w-3 h-3" />
                     <p className="text-sm font-medium">
                       {new Date(nextAppointment.start).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })} às {new Date(nextAppointment.start).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
@@ -249,11 +249,11 @@ export default function Dashboard() {
                   </div>
                 </div>
               ) : (
-                <p className="text-sm italic text-zinc-300 mt-2">Sem compromissos agendados</p>
+                <p className="text-sm italic text-white/60 mt-2">Sem compromissos agendados</p>
               )}
             </div>
           </div>
-          <span className="text-[11px] font-black uppercase tracking-[0.2em] relative z-10 text-zinc-400">Agenda</span>
+          <span className="text-[11px] font-black uppercase tracking-[0.2em] relative z-10 text-white/70">Agenda</span>
         </Link>
       )
     },

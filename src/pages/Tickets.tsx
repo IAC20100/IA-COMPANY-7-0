@@ -46,7 +46,7 @@ export default function Tickets() {
       <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10 shrink-0">
         <div className="flex items-center gap-6">
           <button 
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all text-white border border-white/10 backdrop-blur-md shadow-xl active:scale-95"
           >
             <ArrowLeft className="w-8 h-8" />

@@ -22,6 +22,7 @@ import Weather from './pages/Weather';
 
 function SupabaseStatus() {
   const [status, setStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+  const [errMsg, setErrMsg] = useState<string>('');
 
   useEffect(() => {
     async function checkConnection() {
@@ -30,22 +31,24 @@ function SupabaseStatus() {
         if (error) {
           console.error('Supabase connection error:', error);
           setStatus('error');
+          setErrMsg(error.message);
         } else {
           setStatus('connected');
         }
-      } catch (err) {
+      } catch (err: any) {
         setStatus('error');
+        setErrMsg(err.message || 'Erro desconhecido');
       }
     }
     checkConnection();
   }, []);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-3 py-2 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-medium shadow-lg border border-white/10">
-      <Database className="w-3 h-3" />
-      {status === 'checking' && <span className="text-yellow-400">Verificando Supabase...</span>}
-      {status === 'connected' && <span className="text-green-400">Supabase Conectado</span>}
-      {status === 'error' && <span className="text-red-400">Erro no Supabase (Verifique as chaves)</span>}
+    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-3 py-2 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-medium shadow-lg border border-white/10 max-w-sm">
+      <Database className="w-3 h-3 flex-shrink-0" />
+      {status === 'checking' && <span className="text-yellow-400 truncate">Verificando Supabase...</span>}
+      {status === 'connected' && <span className="text-green-400 truncate">Supabase Conectado</span>}
+      {status === 'error' && <span className="text-red-400 truncate" title={errMsg}>Erro: {errMsg || 'Verifique as chaves'}</span>}
     </div>
   );
 }

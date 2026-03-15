@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
+import { supabase } from './lib/supabase';
 
 export type Client = {
   id: string;
@@ -128,7 +129,9 @@ interface AppState {
   theme: 'light' | 'dark';
   isAuthenticated: boolean;
   menuOrder: string[];
+  isLoading: boolean;
   
+  fetchInitialData: () => Promise<void>;
   setCompanyLogo: (logo: string | null) => void;
   setCompanySignature: (signature: string | null) => void;
   setCompanyData: (data: CompanyData) => void;
@@ -137,9 +140,9 @@ interface AppState {
   login: (user: string, pass: string) => boolean;
   logout: () => void;
   
-  addClient: (client: Omit<Client, 'id'>) => void;
-  updateClient: (id: string, client: Omit<Client, 'id'>) => void;
-  deleteClient: (id: string) => void;
+  addClient: (client: Omit<Client, 'id'>) => Promise<void>;
+  updateClient: (id: string, client: Omit<Client, 'id'>) => Promise<void>;
+  deleteClient: (id: string) => Promise<void>;
   
   addChecklistItem: (item: Omit<ChecklistItem, 'id'>) => void;
   updateChecklistItem: (id: string, item: Omit<ChecklistItem, 'id'>) => void;
@@ -172,7 +175,7 @@ interface AppState {
 
 export const useStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       clients: [],
       checklistItems: [
         { id: uuidv4(), task: 'Verificar extintores', category: 'Segurança' },
@@ -192,7 +195,35 @@ export const useStore = create<AppState>()(
       theme: 'light',
       isAuthenticated: false,
       menuOrder: ['dashboard', 'clients', 'products', 'tickets', 'kanban', 'quotes', 'receipts', 'financial', 'calendar', 'settings'],
+      isLoading: false,
       
+      fetchInitialData: async () => {
+        set({ isLoading: true });
+        try {
+          // Buscar clientes do Supabase
+          const { data: clientsData, error: clientsError } = await supabase.from('clients').select('*');
+          
+          if (!clientsError && clientsData) {
+            // Mapear de snake_case (banco) para camelCase (frontend)
+            const mappedClients: Client[] = clientsData.map(c => ({
+              id: c.id,
+              name: c.name,
+              document: c.document,
+              contactPerson: c.contact_person,
+              phone: c.phone,
+              email: c.email,
+              address: c.address,
+              notes: c.notes
+            }));
+            set({ clients: mappedClients });
+          }
+        } catch (error) {
+          console.error('Erro ao buscar dados iniciais:', error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
       setCompanyLogo: (logo) => set({ companyLogo: logo }),
       setCompanySignature: (signature) => set({ companySignature: signature }),
       setCompanyData: (data) => set({ companyData: data }),
@@ -202,17 +233,83 @@ export const useStore = create<AppState>()(
       login: (user, pass) => {
         if (user === 'admin' && pass === '123') {
           set({ isAuthenticated: true });
+          // Ao fazer login, busca os dados do Supabase
+          get().fetchInitialData();
           return true;
         }
         return false;
       },
       logout: () => set({ isAuthenticated: false }),
       
-      addClient: (client) => set((state) => ({ clients: [...state.clients, { ...client, id: uuidv4() }] })),
-      updateClient: (id, updatedClient) => set((state) => ({
-        clients: state.clients.map(c => c.id === id ? { ...updatedClient, id } : c)
-      })),
-      deleteClient: (id) => set((state) => ({ clients: state.clients.filter(c => c.id !== id) })),
+      addClient: async (client) => {
+        // 1. Prepara os dados para o Supabase (camelCase -> snake_case)
+        const dbClient = {
+          name: client.name,
+          document: client.document,
+          contact_person: client.contactPerson,
+          phone: client.phone,
+          email: client.email,
+          address: client.address,
+          notes: client.notes
+        };
+
+        // 2. Insere no Supabase
+        const { data, error } = await supabase.from('clients').insert([dbClient]).select().single();
+        
+        if (error) {
+          console.error('Erro ao adicionar cliente no Supabase:', error);
+          return;
+        }
+
+        // 3. Atualiza o estado local com o ID gerado pelo Supabase
+        if (data) {
+          const newClient: Client = {
+            id: data.id,
+            name: data.name,
+            document: data.document,
+            contactPerson: data.contact_person,
+            phone: data.phone,
+            email: data.email,
+            address: data.address,
+            notes: data.notes
+          };
+          set((state) => ({ clients: [...state.clients, newClient] }));
+        }
+      },
+
+      updateClient: async (id, updatedClient) => {
+        const dbClient = {
+          name: updatedClient.name,
+          document: updatedClient.document,
+          contact_person: updatedClient.contactPerson,
+          phone: updatedClient.phone,
+          email: updatedClient.email,
+          address: updatedClient.address,
+          notes: updatedClient.notes
+        };
+
+        const { error } = await supabase.from('clients').update(dbClient).eq('id', id);
+        
+        if (error) {
+          console.error('Erro ao atualizar cliente no Supabase:', error);
+          return;
+        }
+
+        set((state) => ({
+          clients: state.clients.map(c => c.id === id ? { ...updatedClient, id } : c)
+        }));
+      },
+
+      deleteClient: async (id) => {
+        const { error } = await supabase.from('clients').delete().eq('id', id);
+        
+        if (error) {
+          console.error('Erro ao deletar cliente no Supabase:', error);
+          return;
+        }
+
+        set((state) => ({ clients: state.clients.filter(c => c.id !== id) }));
+      },
       
       addChecklistItem: (item) => set((state) => ({ checklistItems: [...state.checklistItems, { ...item, id: uuidv4() }] })),
       updateChecklistItem: (id, updatedItem) => set((state) => ({

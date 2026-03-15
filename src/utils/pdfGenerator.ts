@@ -27,15 +27,17 @@ export async function generatePdf(element: HTMLElement, fileName: string) {
         letterRendering: true,
         backgroundColor: '#ffffff',
         logging: false,
-        // Tentar forçar a remoção de oklch se ele ainda estiver presente
+        // Tentar forçar a remoção de oklch/oklab se ele ainda estiver presente
         onclone: (clonedDoc: Document) => {
-          // Remover QUALQUER tag de estilo que possa conter oklch e substituir por cores seguras
+          // Remover QUALQUER tag de estilo que possa conter oklch/oklab e substituir por cores seguras
           const styles = clonedDoc.getElementsByTagName('style');
           for (let i = 0; i < styles.length; i++) {
             let css = styles[i].innerHTML;
-            if (css.includes('oklch')) {
-              // Substituição agressiva de oklch por cores hex aproximadas
+            if (css.includes('oklch') || css.includes('oklab') || css.includes('color-mix')) {
+              // Substituição agressiva de oklch/oklab por cores hex aproximadas
+              css = css.replace(/color-mix\([^)]+\)/g, '#71717a');
               css = css.replace(/oklch\([^)]+\)/g, '#71717a');
+              css = css.replace(/oklab\([^)]+\)/g, '#71717a');
               styles[i].innerHTML = css;
             }
           }
@@ -45,8 +47,11 @@ export async function generatePdf(element: HTMLElement, fileName: string) {
           for (let i = 0; i < all.length; i++) {
             const el = all[i] as HTMLElement;
             const inlineStyle = el.getAttribute('style');
-            if (inlineStyle && inlineStyle.includes('oklch')) {
-              el.setAttribute('style', inlineStyle.replace(/oklch\([^)]+\)/g, '#71717a'));
+            if (inlineStyle && (inlineStyle.includes('oklch') || inlineStyle.includes('oklab') || inlineStyle.includes('color-mix'))) {
+              let newStyle = inlineStyle.replace(/color-mix\([^)]+\)/g, '#71717a');
+              newStyle = newStyle.replace(/oklch\([^)]+\)/g, '#71717a');
+              newStyle = newStyle.replace(/oklab\([^)]+\)/g, '#71717a');
+              el.setAttribute('style', newStyle);
             }
             
             // Forçar background branco e texto preto se necessário para garantir contraste

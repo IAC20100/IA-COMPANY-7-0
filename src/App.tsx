@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings as SettingsIcon, Moon, Sun, User, LogOut } from 'lucide-react';
+import { ArrowLeft, Settings as SettingsIcon, Moon, Sun, User, LogOut, Database } from 'lucide-react';
 import { useStore } from './store';
+import { supabase } from './lib/supabase';
 
 import Dashboard from './pages/Dashboard';
 import Clients from './pages/Clients';
@@ -18,6 +19,36 @@ import Calendar from './pages/Calendar';
 import Products from './pages/Products';
 import Login from './pages/Login';
 import Weather from './pages/Weather';
+
+function SupabaseStatus() {
+  const [status, setStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+
+  useEffect(() => {
+    async function checkConnection() {
+      try {
+        const { error } = await supabase.from('company_settings').select('id').limit(1);
+        if (error) {
+          console.error('Supabase connection error:', error);
+          setStatus('error');
+        } else {
+          setStatus('connected');
+        }
+      } catch (err) {
+        setStatus('error');
+      }
+    }
+    checkConnection();
+  }, []);
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-3 py-2 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-medium shadow-lg border border-white/10">
+      <Database className="w-3 h-3" />
+      {status === 'checking' && <span className="text-yellow-400">Verificando Supabase...</span>}
+      {status === 'connected' && <span className="text-green-400">Supabase Conectado</span>}
+      {status === 'error' && <span className="text-red-400">Erro no Supabase (Verifique as chaves)</span>}
+    </div>
+  );
+}
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { theme, toggleTheme, isAuthenticated, logout } = useStore();
@@ -98,6 +129,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <main className={`flex-1 relative z-10 ${isDashboard ? '' : 'p-6 md:p-8'}`}>
         {children}
       </main>
+      <SupabaseStatus />
     </div>
   );
 }

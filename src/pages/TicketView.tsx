@@ -92,7 +92,7 @@ export default function TicketView() {
 
         <div 
           ref={printRef} 
-          className="bg-white/5 backdrop-blur-md text-white rounded-3xl border border-white/10 shadow-2xl p-8 print:bg-white print:text-black print:shadow-none print:border-none print:p-8 print:block print:w-full print:max-w-none print:rounded-none"
+          className="bg-white/5 backdrop-blur-md text-white rounded-3xl border border-white/10 shadow-2xl p-8 print:bg-white print:text-black print:shadow-none print:border-none print:p-12 print:block print:w-full print:max-w-none print:rounded-none"
         >
         {/* Cabeçalho do Relatório */}
         <div className="border-b border-white/10 pb-6 mb-6 flex justify-between items-start break-inside-avoid print:border-gray-300 print:pb-4 print:mb-4">
@@ -234,20 +234,6 @@ export default function TicketView() {
           </div>
         )}
 
-        {/* Fotos do Serviço */}
-        {ticket.images && ticket.images.length > 0 && (
-          <div className="mt-8 print:mt-8 print:break-before-page">
-            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-4 border-b border-white/5 pb-1 print:text-gray-500 print:border-gray-300">Fotos do Serviço</h3>
-            <div className="grid grid-cols-2 gap-4 print:gap-4">
-              {ticket.images.map((img, index) => (
-                <div key={index} className="rounded-2xl overflow-hidden border border-white/10 print:border-gray-300 print:border break-inside-avoid">
-                  <img src={img} alt={`Foto ${index + 1}`} className="w-full h-auto object-contain max-h-64" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Assinaturas */}
         <div className="mt-16 pt-8 grid grid-cols-2 gap-8 break-inside-avoid print:mt-12 print:pt-4">
           <div className="text-center">
@@ -269,6 +255,20 @@ export default function TicketView() {
             <p className="text-xs text-white/40 uppercase tracking-widest print:text-gray-500">Assinatura</p>
           </div>
         </div>
+
+        {/* Fotos do Serviço (Anexos) */}
+        {ticket.images && ticket.images.length > 0 && (
+          <div className="mt-16 print:mt-12 print:break-before-page">
+            <h3 className="text-xs font-black text-white/20 uppercase tracking-widest mb-4 border-b border-white/5 pb-1 print:text-gray-500 print:border-gray-300">Anexo: Fotos do Serviço</h3>
+            <div className="grid grid-cols-2 gap-4 print:gap-4">
+              {ticket.images.map((img, index) => (
+                <div key={index} className="rounded-2xl overflow-hidden border border-white/10 print:border-gray-300 print:border break-inside-avoid">
+                  <img src={img} alt={`Foto ${index + 1}`} className="w-full h-auto object-contain max-h-64 print:max-h-56" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         </div>
       </div>
     </div>

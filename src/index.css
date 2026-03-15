@@ -156,6 +156,15 @@
 }
 
 @media print {
+  @page {
+    margin: 0;
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   .print\:hidden {
     display: none !important;
   }
